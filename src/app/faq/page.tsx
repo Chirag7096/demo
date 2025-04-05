@@ -1,6 +1,6 @@
-import { Metadata } from 'next';
-import { Accordion } from '@/components/accordion';
+import {Metadata} from 'next';
 import ContactForm from './form';
+import {Accordion} from '@/components/accordion';
 
 const faqs = [
   {

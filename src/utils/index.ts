@@ -12,7 +12,7 @@ export async function dbConnect() {
       console.log('MongoDB error' + err);
       process.exit();
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(error);
   }
 }
@@ -20,6 +20,6 @@ export async function dbConnect() {
 export const createModal = (name: string, schema: mongoose.Schema) =>
   mongoose.models?.[name] || mongoose.model(name, schema);
 
-const API = axios.create({ baseURL: 'http://localhost:3000/api' });
+const API = axios.create({baseURL: 'http://localhost:3000/api'});
 
-export const { get, post } = API;
+export const {get, post} = API;

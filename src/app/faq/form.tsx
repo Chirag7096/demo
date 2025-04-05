@@ -1,22 +1,22 @@
 'use client';
-import { post } from '@/utils';
-import { useForm } from 'react-hook-form';
-import { useToast } from '@/components/Toast';
+import {post} from '@/utils';
+import {useForm} from 'react-hook-form';
+import {useToast} from '@/components/Toast';
 
 export default function ContactForm() {
   const {
     reset,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
   } = useForm();
 
-  const { showToast } = useToast();
+  const {showToast} = useToast();
 
-  const onSubmit = async (val: any) => {
+  const onSubmit = async (val: Record<string, string>) => {
     try {
-      const { data } = await post('contact', val);
-      showToast({ message: data.message });
+      const {data} = await post('contact', val);
+      showToast({message: data.message});
       reset();
     } catch (e) {
       console.log('🚀 ~ post ~ e:', e);
@@ -30,7 +30,7 @@ export default function ContactForm() {
           <input
             type="text"
             placeholder="First Name"
-            {...register('firstName', { required: 'First name is required' })}
+            {...register('firstName', {required: 'First name is required'})}
             className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500"
           />
           {errors?.firstName && <p className="mt-1 text-sm text-red-600">{errors?.firstName?.message as string}</p>}
@@ -39,7 +39,7 @@ export default function ContactForm() {
           <input
             type="text"
             placeholder="Last Name"
-            {...register('lastName', { required: 'Last name is required' })}
+            {...register('lastName', {required: 'Last name is required'})}
             className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500"
           />
           {errors?.lastName && <p className="mt-1 text-sm text-red-600">{errors?.lastName?.message as string}</p>}
@@ -52,7 +52,7 @@ export default function ContactForm() {
           placeholder="Email"
           {...register('email', {
             required: 'Email is required',
-            pattern: { message: 'Invalid email address', value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+            pattern: {message: 'Invalid email address', value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/},
           })}
           className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500"
         />
@@ -65,7 +65,7 @@ export default function ContactForm() {
           rows={5}
           {...register('message', {
             required: 'Message is required',
-            minLength: { value: 10, message: 'Minimum 10 characters' },
+            minLength: {value: 10, message: 'Minimum 10 characters'},
           })}
           className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500"
         />
@@ -75,8 +75,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-md bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 sm:w-auto"
-      >
+        className="w-full rounded-md bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 sm:w-auto">
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </button>
     </form>
