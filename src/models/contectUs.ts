@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose';
-import { createModal } from '@/utils';
+import {Schema} from 'mongoose';
+import {createModal} from '@/utils';
 
 const contectUsSchema = new Schema({
   firstName: {
