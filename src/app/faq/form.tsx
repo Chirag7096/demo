@@ -122,8 +122,8 @@ export default function ContactForm() {
         <input
           type="file"
           ref={inputRef}
+          accept="image/*"
           className="hidden"
-          accept="image/*,application/pdf"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
         />
       </div>
