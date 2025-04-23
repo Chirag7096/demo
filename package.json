@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "schema": "rover graph introspect http://localhost:3000/api/graphql > src/app/api/graphql/schema.graphql && graphql-codegen",
     "lint": "next lint"
   },
   "dependencies": {
@@ -16,21 +17,26 @@
     "@aws-sdk/s3-request-presigner": "^3.787.0",
     "@heroicons/react": "^2.2.0",
     "axios": "^1.8.4",
-    "graphql": "^16.10.0",
     "mongoose": "^8.13.2",
-    "next": "15.2.4",
+    "next": "^15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0"
   },
   "devDependencies": {
+    "@apollo/rover": "^0.29.0",
     "@eslint/eslintrc": "^3",
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.0",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "graphql": "^16.10.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "typescript": "^5"

@@ -1,10 +1,14 @@
 import {dbConnect} from '@/utils';
 import {contectUs} from '@/models';
+import {MutationSubmitContactFormArgs} from './types';
 
 export const resolvers = {
   Query: {hello: () => 'Hello from GraphQL!'},
   Mutation: {
-    submitContactForm: async (_: any, {firstName, lastName, email, message, fileUrl}: any) => {
+    submitContactForm: async (
+      _: unknown,
+      {firstName, lastName, email, message, fileUrl}: MutationSubmitContactFormArgs,
+    ) => {
       if (!firstName || !email || !message) throw new Error('firstName, email, and message are required');
       try {
         await dbConnect();
