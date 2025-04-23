@@ -1,5 +1,6 @@
 import {dbConnect} from '@/utils';
 import {contectUs} from '@/models';
+import {verifyCaptchaToken} from '@/utils/captch';
 import {MutationSubmitContactFormArgs} from './types';
 
 export const resolvers = {
@@ -7,16 +8,19 @@ export const resolvers = {
   Mutation: {
     submitContactForm: async (
       _: unknown,
-      {firstName, lastName, email, message, fileUrl}: MutationSubmitContactFormArgs,
+      {firstName, lastName, email, message, fileUrl, captchaToken}: MutationSubmitContactFormArgs,
     ) => {
-      if (!firstName || !email || !message) throw new Error('firstName, email, and message are required');
       try {
+        if (!firstName || !email || !message || !captchaToken)
+          throw new Error('firstName, email, message and captchaToken are required');
+        const {score} = await verifyCaptchaToken(captchaToken);
+        if (score < 0.5) throw new Error('Captcha verification failed');
         await dbConnect();
         await contectUs.insertOne({firstName, lastName, email, message, fileUrl});
         return {message: 'Our Team will reach you.'};
       } catch (error) {
         console.error('submitContactForm error:', error);
-        throw new Error('Server error');
+        throw new Error((error as Error)?.message || 'Server error');
       }
     },
   },

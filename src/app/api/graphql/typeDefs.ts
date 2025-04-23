@@ -16,6 +16,7 @@ export const typeDefs = gql`
       email: String!
       message: String!
       fileUrl: String
+      captchaToken: String!
     ): MessageResponse!
   }
 `;

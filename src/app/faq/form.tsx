@@ -2,7 +2,8 @@
 import {useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useToast} from '@/components/Toast';
-import {gql, useMutation} from '@apollo/client';
+import {getCaptchaToken} from '@/utils/captch';
+import {ApolloError, gql, useMutation} from '@apollo/client';
 
 const SUBMIT_CONTACT_FORM = gql`
   mutation SubmitContactForm(
@@ -11,8 +12,16 @@ const SUBMIT_CONTACT_FORM = gql`
     $email: String!
     $message: String!
     $fileUrl: String
+    $captchaToken: String!
   ) {
-    submitContactForm(firstName: $firstName, lastName: $lastName, email: $email, message: $message, fileUrl: $fileUrl) {
+    submitContactForm(
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      message: $message
+      fileUrl: $fileUrl
+      captchaToken: $captchaToken
+    ) {
       message
     }
   }
@@ -41,15 +50,16 @@ export default function ContactForm() {
         const data = await res.json();
         variables = {...variables, ...data};
       }
-      console.log('🚀 ~ onSubmit ~ variables:', variables);
+      const captchaToken = await getCaptchaToken();
+      variables = {...variables, captchaToken};
       const {data} = await submitForm({variables});
-      console.log('🚀 ~ onSubmit ~ data:', data);
       showToast({message: data.submitContactForm.message});
       setFile(null);
       reset();
-    } catch (e) {
-      showToast({message: 'Error while submiting the form'});
-      console.log('🚀 ~ GraphQL mutation error:', e);
+    } catch (e: unknown) {
+      const message =
+        (e as ApolloError)?.graphQLErrors?.[0]?.message || (e as Error)?.message || 'Error while submitting the form';
+      showToast({message});
     }
   };
 

@@ -9,13 +9,16 @@ type Query {
   hello: String
 }
 type Mutation {
-  submitContactForm(firstName: String!, lastName: String, email: String!, message: String!, fileUrl: String): MessageResponse!
+  submitContactForm(
+    firstName: String!
+    lastName: String
+    email: String!
+    message: String!
+    fileUrl: String
+    captchaToken: String!
+  ): MessageResponse!
 }
 "Exposes a URL that specifies the behavior of this scalar."
-directive @specifiedBy(
-    "The URL that specifies the behavior of this scalar."
-    url: String!
-  ) on SCALAR
+directive @specifiedBy("The URL that specifies the behavior of this scalar." url: String!) on SCALAR
 "Indicates exactly one field must be supplied and this field must not be `null`."
 directive @oneOf on INPUT_OBJECT
-

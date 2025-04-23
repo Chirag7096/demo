@@ -1,20 +1,20 @@
-import { gql } from '@apollo/client';
+import {gql} from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]?: Maybe<T[SubKey]>};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]: Maybe<T[SubKey]>};
+export type MakeEmpty<T extends {[key: string]: unknown}, K extends keyof T> = {[_ in K]?: never};
+export type Incremental<T> = T | {[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never};
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+  ID: {input: string; output: string};
+  String: {input: string; output: string};
+  Boolean: {input: boolean; output: boolean};
+  Int: {input: number; output: number};
+  Float: {input: number; output: number};
 };
 
 export type MessageResponse = {
@@ -27,8 +27,8 @@ export type Mutation = {
   submitContactForm: MessageResponse;
 };
 
-
 export type MutationSubmitContactFormArgs = {
+  captchaToken: Scalars['String']['input'];
   email: Scalars['String']['input'];
   fileUrl?: InputMaybe<Scalars['String']['input']>;
   firstName: Scalars['String']['input'];
@@ -47,26 +47,39 @@ export type SubmitContactFormMutationVariables = Exact<{
   email: Scalars['String']['input'];
   message: Scalars['String']['input'];
   fileUrl?: InputMaybe<Scalars['String']['input']>;
+  captchaToken: Scalars['String']['input'];
 }>;
 
-
-export type SubmitContactFormMutation = { __typename?: 'Mutation', submitContactForm: { __typename?: 'MessageResponse', message: string } };
-
+export type SubmitContactFormMutation = {
+  __typename?: 'Mutation';
+  submitContactForm: {__typename?: 'MessageResponse'; message: string};
+};
 
 export const SubmitContactFormDocument = gql`
-    mutation SubmitContactForm($firstName: String!, $lastName: String, $email: String!, $message: String!, $fileUrl: String) {
-  submitContactForm(
-    firstName: $firstName
-    lastName: $lastName
-    email: $email
-    message: $message
-    fileUrl: $fileUrl
+  mutation SubmitContactForm(
+    $firstName: String!
+    $lastName: String
+    $email: String!
+    $message: String!
+    $fileUrl: String
+    $captchaToken: String!
   ) {
-    message
+    submitContactForm(
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      message: $message
+      fileUrl: $fileUrl
+      captchaToken: $captchaToken
+    ) {
+      message
+    }
   }
-}
-    `;
-export type SubmitContactFormMutationFn = Apollo.MutationFunction<SubmitContactFormMutation, SubmitContactFormMutationVariables>;
+`;
+export type SubmitContactFormMutationFn = Apollo.MutationFunction<
+  SubmitContactFormMutation,
+  SubmitContactFormMutationVariables
+>;
 
 /**
  * __useSubmitContactFormMutation__
@@ -86,13 +99,22 @@ export type SubmitContactFormMutationFn = Apollo.MutationFunction<SubmitContactF
  *      email: // value for 'email'
  *      message: // value for 'message'
  *      fileUrl: // value for 'fileUrl'
+ *      captchaToken: // value for 'captchaToken'
  *   },
  * });
  */
-export function useSubmitContactFormMutation(baseOptions?: Apollo.MutationHookOptions<SubmitContactFormMutation, SubmitContactFormMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SubmitContactFormMutation, SubmitContactFormMutationVariables>(SubmitContactFormDocument, options);
-      }
+export function useSubmitContactFormMutation(
+  baseOptions?: Apollo.MutationHookOptions<SubmitContactFormMutation, SubmitContactFormMutationVariables>,
+) {
+  const options = {...defaultOptions, ...baseOptions};
+  return Apollo.useMutation<SubmitContactFormMutation, SubmitContactFormMutationVariables>(
+    SubmitContactFormDocument,
+    options,
+  );
+}
 export type SubmitContactFormMutationHookResult = ReturnType<typeof useSubmitContactFormMutation>;
 export type SubmitContactFormMutationResult = Apollo.MutationResult<SubmitContactFormMutation>;
-export type SubmitContactFormMutationOptions = Apollo.BaseMutationOptions<SubmitContactFormMutation, SubmitContactFormMutationVariables>;
+export type SubmitContactFormMutationOptions = Apollo.BaseMutationOptions<
+  SubmitContactFormMutation,
+  SubmitContactFormMutationVariables
+>;
