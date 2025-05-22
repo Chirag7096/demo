@@ -15,7 +15,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Script
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY}`}
         />
         <ApolloWrapper>

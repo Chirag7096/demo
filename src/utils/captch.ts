@@ -1,9 +1,13 @@
 export function getCaptchaToken(): Promise<string> {
-  return new Promise((res) => {
-    // @ts-expect-error grecaptcha type is missing
-    grecaptcha.enterprise.ready(async () => {
-      // @ts-expect-error grecaptcha type is missing
-      res(await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_CAPTCHA_KEY, {action: 'contect_us'}));
+  return new Promise((res, rej) => {
+    if (!window.grecaptcha || !window.grecaptcha.enterprise) return rej(new Error('reCAPTCHA not loaded'));
+
+    window.grecaptcha.enterprise.ready(async () => {
+      try {
+        res(await window.grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_CAPTCHA_KEY!, {action: 'contact_us'}));
+      } catch (err) {
+        rej(err);
+      }
     });
   });
 }
