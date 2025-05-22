@@ -1,9 +1,12 @@
 export function getCaptchaToken(): Promise<string> {
   return new Promise((res, rej) => {
-    if (!window.grecaptcha || !window.grecaptcha.enterprise) return rej(new Error('reCAPTCHA not loaded'));
+    // @ts-expect-error
+    if (!window?.grecaptcha || !window?.grecaptcha.enterprise) return rej(new Error('reCAPTCHA not loaded'));
 
+    // @ts-expect-error
     window.grecaptcha.enterprise.ready(async () => {
       try {
+        // @ts-expect-error
         res(await window.grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_CAPTCHA_KEY!, {action: 'contact_us'}));
       } catch (err) {
         rej(err);
