@@ -2,7 +2,6 @@
 import {useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useToast} from '@/components/Toast';
-import {getCaptchaToken} from '@/utils/captch';
 import {ApolloError, gql, useMutation} from '@apollo/client';
 
 const SUBMIT_CONTACT_FORM = gql`
@@ -39,6 +38,23 @@ export default function ContactForm() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [submitForm] = useMutation(SUBMIT_CONTACT_FORM);
+
+  function getCaptchaToken(): Promise<string> {
+    return new Promise((res, rej) => {
+      // @ts-expect-error window is not defined
+      if (!window?.grecaptcha || !window?.grecaptcha.enterprise) return rej(new Error('reCAPTCHA not loaded'));
+
+      // @ts-expect-error window is not defined
+      window.grecaptcha.enterprise.ready(async () => {
+        try {
+          // @ts-expect-error window is not defined
+          res(await window.grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_CAPTCHA_KEY!, {action: 'contact_us'}));
+        } catch (err) {
+          rej(err);
+        }
+      });
+    });
+  }
 
   const onSubmit = async (variables: Record<string, string>) => {
     try {
